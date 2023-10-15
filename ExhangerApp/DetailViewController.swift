@@ -49,14 +49,16 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let task = session.dataTask(with: url!) {( data, response, error) in
             if error != nil {
-                print(error?.localizedDescription)}
+                let alert = UIAlertController(title: "Error", message: error?.localizedDescription, preferredStyle: .alert)
+                let okButton = UIAlertAction(title: "Tamam", style: .default)
+                alert.addAction(okButton)
+                self.present(alert, animated: true, completion: nil)
+            }
             else {
                 if data != nil{
                     do{
-                        let jsonResponse = try JSONSerialization.jsonObject(with: data!,options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any> //Ne işe yaradığını gpt ye sor
-                        
-                        print(jsonResponse)
-                        
+                        let jsonResponse = try JSONSerialization.jsonObject(with: data!,options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
+                                                
                         DispatchQueue.main.async {
                             
                             let array = Array(jsonResponse["rates"] as! [String : Any])
